@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Journal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #111827;
+        }
+        h2 {
+            font-size: 1.5rem;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+        .subtitle {
+            font-size: 1.25rem;
+            color: #6b7280;
+        }
+        .search-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+        }
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .filter-button {
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        .filter-button.active {
+            background-color: #3b82f6;
+            color: #fff;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .card-date {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #3b82f6;
+            color: #fff;
+            border-radius: 0.25rem;
+            text-decoration: none;
+        }
+        .list {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+        .countdown-item {
+            background-color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .countdown-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #111827;
+        }
+        .countdown-label {
+            color: #6b7280;
+        }
+        .upcoming-conferences {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .conference-item {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 2rem;
+        }
+        .conference-date {
+            flex: 0 0 100px;
+            text-align: center;
+        }
+        .conference-day {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        .conference-month-year {
+            font-size: 1rem;
+        }
+        .conference-image {
+            flex: 0 0 200px;
+            margin-right: 1rem;
+        }
+        .conference-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .conference-details {
+            flex: 1;
+        }
+        .conference-category {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        .conference-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .conference-description {
+            font-size: 1rem;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+        .conference-author {
+            font-size: 0.875rem;
+            font-weight: bold;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        .pagination-button {
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        .pagination-button.active {
+            background-color: #3b82f6;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Conference Journal</h1>
+            <p class="subtitle">Your gateway to global academic and professional events</p>
+        </header>
+
+        <main>
+            <!-- Search and Filter Options -->
+            <section class="search-filter">
+                <input type="text" class="search-input" placeholder="Search conferences...">
+                <div class="filter-buttons">
+                    <button class="filter-button active">All</button>
+                    <button class="filter-button">Technology</button>
+                    <button class="filter-button">Medical</button>
+                    <button class="filter-button">Business</button>
+                    <button class="filter-button">Science</button>
+                    <button class="filter-button">Education</button>
+                </div>
+            </section>
+
+            <!-- Featured Conferences -->
+            <section>
+                <h2>Featured Conferences</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3 class="card-title">Tech Innovation Summit 2023</h3>
+                        <p class="card-date">2023-09-15</p>
+                        <span class="badge">Technology</span>
+                        <a href="#" class="button">Learn More</a>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Global Health Conference</h3>
+                        <p class="card-date">2023-10-20</p>
+                        <span class="badge">Medical</span>
+                        <a href="#" class="button">Learn More</a>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Future of AI Symposium</h3>
+                        <p class="card-date">2023-11-05</p>
+                        <span class="badge">Technology</span>
+                        <a href="#" class="button">Learn More</a>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Sustainable Business Forum</h3>
+                        <p class="card-date">2023-12-01</p>
+                        <span class="badge">Business</span>
+                        <a href="#" class="button">Learn More</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upcoming Conferences (New Design) -->
+            <section class="upcoming-conferences">
+                <h2>UPCOMING CONFERENCES</h2>
+                <div class="conference-item">
+                    <div class="conference-date">
+                        <div class="conference-day">20</div>
+                        <div class="conference-month-year">JAN 2024</div>
+                    </div>
+                    <div class="conference-image">
+                        <img src="/placeholder.svg?height=200&width=300" alt="Conference Image">
+                    </div>
+                    <div class="conference-details">
+                        <div class="conference-category">IDEAS</div>
+                        <h3 class="conference-title">Eli Lilly Alzheimer's Drug Approved</h3>
+                        <p class="conference-description">Drug Administration On Tuesday Approved Elly</p>
+                        <p class="conference-author">BY JANE COOPER</p>
+                    </div>
+                </div>
+                <div class="conference-item">
+                    <div class="conference-date">
+                        <div class="conference-day">28</div>
+                        <div class="conference-month-year">JAN 2024</div>
+                    </div>
+                    <div class="conference-image">
+                        <img src="/placeholder.svg?height=200&width=300" alt="Conference Image">
+                    </div>
+                    <div class="conference-details">
+                        <div class="conference-category">IDEAS</div>
+                        <h3 class="conference-title">Bangladesh Vice-Captain Taskin A</h3>
+                        <p class="conference-description">Bangladesh Used Only Two Pacers Against India</p>
+                        <p class="conference-author">BY ESTHER HOWARD</p>
+                    </div>
+                </div>
+                <div class="conference-item">
+                    <div class="conference-date">
+                        <div class="conference-day">1</div>
+                        <div class="conference-month-year">FEB 2024</div>
+                    </div>
+                    <div class="conference-image">
+                        <img src="/placeholder.svg?height=200&width=300" alt="Conference Image">
+                    </div>
+                    <div class="conference-details">
+                        <div class="conference-category">IDEAS</div>
+                        <h3 class="conference-title">Did Suffocation Lead To Hathras</h3>
+                        <p class="conference-description">At Least 107 People, Mostly Okay Women Killed</p>
+                        <p class="conference-author">BY JEROME BELL</p>
+                    </div>
+                </div>
+                <div class="pagination">
+                    <button class="pagination-button active">1</button>
+                    <button class="pagination-button">2</button>
+                    <button class="pagination-button">→</button>
+                    <button class="pagination-button">»</button>
+                </div>
+            </section>
+
+            <!-- Updates and Announcements -->
+            <section>
+                <h2>Updates and Announcements</h2>
+                <div class="card">
+                    <h3 class="card-title">Latest News</h3>
+                    <ul class="list">
+                        <li>New virtual attendance options available for all upcoming conferences</li>
+                        <li>Early bird registration now open for the Tech Innovation Summit 2023</li>
+                        <li>Call for papers: Submit your research for the Global Health Conference</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Conference Categories -->
+            <section>
+                <h2>Conference Categories</h2>
+                <div class="card-grid">
+                    <button class="filter-button">Technology</button>
+                    <button class="filter-button">Medical</button>
+                    <button class="filter-button">Business</button>
+                    <button class="filter-button">Science</button>
+                    <button class="filter-button">Education</button>
+                </div>
+            </section>
+
+            <!-- Conference Highlights -->
+            <section>
+                <h2>Conference Highlights</h2>
+                <div class="card">
+                    <h3 class="card-title">Tech Innovation Summit 2023</h3>
+                    <p>Join us for three days of cutting-edge technology presentations, workshops, and networking opportunities.</p>
+                    <ul class="list">
+                        <li>Keynote speech by leading AI researcher</li>
+                        <li>Hands-on workshops on blockchain technology</li>
+                        <li>Panel discussion on the future of quantum computing</li>
+                    </ul>
+                    <a href="#" class="button">Register Now</a>
+                </div>
+            </section>
+
+            <!-- Virtual Attendance Information -->
+            <section>
+                <h2>Virtual Attendance Information</h2>
+                <div class="card">
+                    <p>We offer virtual attendance options for all our conferences. Benefits include:</p>
+                    <ul class="list">
+                        <li>Live streaming of all sessions</li>
+                        <li>Interactive Q&A with speakers</li>
+                        <li>Access to recorded sessions for 30 days post-conference</li>
+                        <li>Virtual networking opportunities</li>
+                    </ul>
+                    <p>For more information on how to attend virtually, please visit our Virtual Attendance Guide.</p>
+                    <a href="#" class="button">Virtual Attendance Guide</a>
+                </div>
+            </section>
+
+            <!-- Event Countdown -->
+            <section>
+                <h2>Next Event Countdown</h2>
+                <div class="card">
+                    <h3 class="card-title">Tech Innovation Summit 2023</h3>
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <div class="countdown-value">15</div>
+                            <div class="countdown-label">Days</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value">08</div>
+                            <div class="countdown-label">Hours</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value">23</div>
+                            <div class="countdown-label">Minutes</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value">55</div>
+                            <div class="countdown-label">Seconds</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
